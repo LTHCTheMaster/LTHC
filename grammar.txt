@@ -1,7 +1,10 @@
-expr    : term ((PLUS|MINUS) term)*
+expr
+        : term ((PLUS|MINUS) term)*
 
-term    : factor ((MUL|DIV|QEDIV|MOD) factor)*
+term
+        : factor ((MUL|DIV|QEDIV|MOD) factor)*
 
-factor  : INT|FLOAT
-		: (PLUS|MINUS) factor
-		: LPAREN expr RPAREN
+factor  
+        : INT|FLOAT
+        : (PLUS|MINUS) factor
+        : LPAREN expr RPAREN
