@@ -44,6 +44,7 @@ T_MUL      = 'MUL'
 T_DIV      = 'DIV'
 T_QEDIV    = 'QEDIV'
 T_MOD      = 'MOD'
+T_POW      = 'POW'
 
 T_LPAREN   = 'LPAREN'
 T_RPAREN   = 'RPAREN'
@@ -93,12 +94,14 @@ class Lexer:
                 tokens.append(Token(T_MINUS))
                 self.advance()
             elif self.current_char == '*':
-                tokens.append(Token(T_MUL))
-                self.advance()
+                tokens.append(self.make_mul())
             elif self.current_char == '/':
                 tokens.append(self.make_div())
             elif self.current_char == '%':
                 tokens.append(Token(T_MOD))
+                self.advance()
+            elif self.current_char == '^':
+                tokens.append(Token(T_POW))
                 self.advance()
             
             elif self.current_char == '(':
@@ -139,6 +142,14 @@ class Lexer:
         self.advance()
         if self.current_char == '/':
             tokentype = T_QEDIV
+            self.advance()
+        return Token(tokentype)
+    
+    def make_mul(self):
+        tokentype = T_MUL
+        self.advance()
+        if self.current_char == '*':
+            tokentype = T_POW
             self.advance()
         return Token(tokentype)
 
@@ -222,18 +233,12 @@ class Parser:
         return res
     
     ###################################
-
-    def factor(self):
+    
+    def atom(self):
         res = ParseResult()
         tok = self.current_token
 
-        if tok.type in (T_PLUS, T_MINUS):
-            res.register(self.advance())
-            factor = res.register(self.factor())
-            if res.error: return res
-            return res.success(UnaryOpNode(tok, factor))
-
-        elif tok.type == T_NUM:
+        if tok.type == T_NUM:
             res.register(self.advance())
             return res.success(NumberNode(tok))
 
@@ -250,8 +255,23 @@ class Parser:
                 ))
 
         return res.failure(InvalidSyntaxError(
-            "Expected num", self.file, self.line
+            "Expected int, float, '+', '-' or '('", self.file, self.line
         ))
+
+    def power(self):
+        return self.bin_op(self.atom, (T_POW, ), self.factor)
+
+    def factor(self):
+        res = ParseResult()
+        tok = self.current_token
+
+        if tok.type in (T_PLUS, T_MINUS):
+            res.register(self.advance())
+            factor = res.register(self.factor())
+            if res.error: return res
+            return res.success(UnaryOpNode(tok, factor))
+
+        return self.power()
     
     def term(self):
         return self.bin_op(self.factor, (T_MUL, T_DIV, T_QEDIV, T_MOD))
@@ -261,15 +281,18 @@ class Parser:
     
     ###################################
 
-    def bin_op(self, func, ops):
+    def bin_op(self, func_a, ops, func_b=None):
+        if func_b == None:
+            func_b = func_a
+
         res = ParseResult()
-        left = res.register(func())
+        left = res.register(func_a())
         if res.error: return res
 
         while self.current_token.type in ops:
             op_tok = self.current_token
             res.register(self.advance())
-            right = res.register(func())
+            right = res.register(func_b())
             if res.error: return res
             left = BinOpNode(left, op_tok, right)
 
@@ -354,6 +377,10 @@ class Number:
 
             return Number(self.value % other.value, self.context).set_context(self.context), None
 
+    def powed_by(self, other):
+        if isinstance(other, Number):
+            return Number(self.value ** other.value, self.context).set_context(self.context), None
+
     def __repr__(self):
         return str(self.value)
 
@@ -407,6 +434,8 @@ class Interpreter:
             result, error = left.qedived_by(right)
         elif node.op_tok.type == T_MOD:
             result, error = left.moded_by(right)
+        elif node.op_tok.type == T_POW:
+            result, error = left.powed_by(right)
 
         if error:
             return res.failure(error)

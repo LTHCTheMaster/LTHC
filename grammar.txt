@@ -4,7 +4,13 @@ expr
 term
         : factor ((MUL|DIV|QEDIV|MOD) factor)*
 
-factor  
-        : INT|FLOAT
+factor
         : (PLUS|MINUS) factor
+        : power
+
+power
+        : atom (POW factor)*
+
+atom
+        : INT|FLOAT
         : LPAREN expr RPAREN
