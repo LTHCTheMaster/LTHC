@@ -42,6 +42,8 @@ T_PLUS     = 'PLUS'
 T_MINUS    = 'MINUS'
 T_MUL      = 'MUL'
 T_DIV      = 'DIV'
+T_QEDIV    = 'QEDIV'
+T_MOD      = 'MOD'
 
 T_LPAREN   = 'LPAREN'
 T_RPAREN   = 'RPAREN'
@@ -94,7 +96,9 @@ class Lexer:
                 tokens.append(Token(T_MUL))
                 self.advance()
             elif self.current_char == '/':
-                tokens.append(Token(T_DIV))
+                tokens.append(self.make_div())
+            elif self.current_char == '%':
+                tokens.append(Token(T_MOD))
                 self.advance()
             
             elif self.current_char == '(':
@@ -129,6 +133,14 @@ class Lexer:
             return Token(T_NUM, int(num_str))
         else:
             return Token(T_NUM, float(num_str))
+    
+    def make_div(self):
+        tokentype = T_DIV
+        self.advance()
+        if self.current_char == '/':
+            tokentype = T_QEDIV
+            self.advance()
+        return Token(tokentype)
 
 #######################################
 # NODES
@@ -242,7 +254,7 @@ class Parser:
         ))
     
     def term(self):
-        return self.bin_op(self.factor, (T_MUL, T_DIV))
+        return self.bin_op(self.factor, (T_MUL, T_DIV, T_QEDIV, T_MOD))
 
     def expr(self):
         return self.bin_op(self.term, (T_PLUS, T_MINUS))
@@ -323,6 +335,24 @@ class Number:
                 )
 
             return Number(self.value / other.value, self.context).set_context(self.context), None
+    
+    def qedived_by(self, other):
+        if isinstance(other, Number):
+            if other.value == 0:
+                return None, RuntimeError(
+                    'Division by zero', self.file, self.line
+                )
+
+            return Number(self.value // other.value, self.context).set_context(self.context), None
+    
+    def moded_by(self, other):
+        if isinstance(other, Number):
+            if other.value == 0:
+                return None, RuntimeError(
+                    'Division by zero', self.file, self.line
+                )
+
+            return Number(self.value % other.value, self.context).set_context(self.context), None
 
     def __repr__(self):
         return str(self.value)
@@ -373,6 +403,10 @@ class Interpreter:
             result, error = left.multed_by(right)
         elif node.op_tok.type == T_DIV:
             result, error = left.dived_by(right)
+        elif node.op_tok.type == T_QEDIV:
+            result, error = left.qedived_by(right)
+        elif node.op_tok.type == T_MOD:
+            result, error = left.moded_by(right)
 
         if error:
             return res.failure(error)
