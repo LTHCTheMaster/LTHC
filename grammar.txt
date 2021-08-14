@@ -17,7 +17,10 @@ factor
         : power
 
 power
-        : atom (POW factor)*
+        : call (POW factor)*
+
+call
+        : atom (LPAREN (expr (COMMA expr)*)? RPAREN)?
 
 atom
         : NUM|IDENTIFIER
@@ -25,6 +28,7 @@ atom
         : if-expr
         : for-expr
         : while-expr
+        : func-def
 
 if-expr
         : KEYWORD:IF expr KEYWORD:THEN expr
@@ -37,3 +41,8 @@ for-expr
 
 while-expr
         : KEYWORD:WHILE expr THEN expr
+
+func-def
+        : KEYWORD:FUNC IDENTIFIER?
+          LPAREN (IDENTIFIER (COMMA IDENTIFIER)*)? RPAREN
+          ARROW expr

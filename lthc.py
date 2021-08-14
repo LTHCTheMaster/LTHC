@@ -115,6 +115,8 @@ T_IDENTIFIER  = 'IDENTIFIER'
 T_KEYWORD     = 'KEYWORD'
 
 T_EQ          = 'EQ'
+T_COMMA       = 'COMMA'
+T_ARROW       = 'ARROW'
 
 T_EE          = 'EE'
 T_NE          = 'NE'
@@ -139,7 +141,8 @@ KEYWORDS = [
     'FOR',
     'TO',
     'STEP',
-    'WHILE'
+    'WHILE',
+    'FUNC'
 ]
 
 class Token:
@@ -193,8 +196,7 @@ class Lexer:
                 tokens.append(Token(T_PLUS, pos_start=self.pos))
                 self.advance()
             elif self.current_char == '-':
-                tokens.append(Token(T_MINUS, pos_start=self.pos))
-                self.advance()
+                tokens.append(self.make_minus_or_arrow())
             elif self.current_char == '*':
                 tokens.append(Token(T_MUL, pos_start=self.pos))
                 self.advance()
@@ -205,6 +207,10 @@ class Lexer:
                 self.advance()
             elif self.current_char == '^':
                 tokens.append(Token(T_POW, pos_start=self.pos))
+                self.advance()
+            
+            elif self.current_char == ',':
+                tokens.append(Token(T_COMMA, pos_start=self.pos))
                 self.advance()
             
             elif self.current_char == '=':
@@ -327,6 +333,17 @@ class Lexer:
         
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
+    def make_minus_or_arrow(self):
+        pos_start = self.pos.copy()
+        tok_type = T_MINUS
+        self.advance()
+
+        if self.current_char == '>':
+            tok_type = T_ARROW
+            self.advance()
+        
+        return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+
 #######################################
 # NODES
 #######################################
@@ -405,6 +422,33 @@ class WhileNode:
 
         self.pos_start = self.condition_node.pos_start
         self.pos_end = self.body_node.pos_end
+
+class FuncDefNode:
+    def __init__(self, var_name_tok, arg_name_toks, body_node):
+        self.var_name_tok = var_name_tok
+        self.arg_name_toks = arg_name_toks
+        self.body_node = body_node
+
+        if self.var_name_tok:
+            self.pos_start = self.var_name_tok.pos_start
+        elif len(self.arg_name_toks) > 0:
+            self.pos_start = self.arg_name_toks[0].pos_start
+        else:
+            self.pos_start = self.body_node.pos_start
+        
+        self.pos_end = self.body_node.pos_end
+
+class CallNode:
+    def __init__(self, node_to_call, args_node):
+        self.node_to_call = node_to_call
+        self.arg_nodes = args_node
+
+        self.pos_start = self.node_to_call.pos_start
+
+        if len(self.arg_nodes) > 0:
+            self.pos_end = self.arg_nodes[len(self.arg_nodes) - 1].pos_end
+        else:
+            self.pos_end = self.arg_nodes.pos_end
 
 #######################################
 # PARSE RESULT
