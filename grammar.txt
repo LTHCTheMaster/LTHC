@@ -23,7 +23,7 @@ call
         : atom (LPAREN (expr (COMMA expr)*)? RPAREN)?
 
 atom
-        : NUM|IDENTIFIER
+        : NUM|STRING|IDENTIFIER
         : LPAREN expr RPAREN
         : if-expr
         : for-expr

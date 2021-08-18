@@ -98,6 +98,7 @@ class Position:
 #######################################
 
 T_NUM         = 'NUM'
+T_STRING      = 'STRING'
 
 T_PLUS     	  = 'PLUS'
 T_MINUS    	  = 'MINUS'
@@ -191,6 +192,8 @@ class Lexer:
                 tokens.append(self.make_number())
             elif self.current_char in LETTERS:
                 tokens.append(self.make_identifier())
+            elif self.current_char == '"':
+                tokens.append(self.make_string())
             
             elif self.current_char == '+':
                 tokens.append(Token(T_PLUS, pos_start=self.pos))
@@ -267,7 +270,7 @@ class Lexer:
             tok_type = T_QEDIV
             self.advance()
         
-        return Token(T_DIV, pos_start=pos_start, pos_end=self.pos)
+        return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
 
     def make_identifier(self):
         id_str = ''
@@ -343,12 +346,49 @@ class Lexer:
             self.advance()
         
         return Token(tok_type, pos_start=pos_start, pos_end=self.pos)
+    
+    def make_string(self):
+        string_value = ''
+        pos_start = self.pos.copy()
+        escape_character = False
+        self.advance()
+
+        escape_characters = {
+            'n': '\n',
+            't': '\t',
+            'r': '\r',
+            '-': '\n\t'
+        }
+
+        while self.current_char != None and (self.current_char != '"' or escape_character):
+            if escape_character:
+                string_value += escape_characters.get(self.current_char, self.current_char)
+            else:
+                if self.current_char == '\\':
+                    escape_character = True
+                else:
+                    string_value += self.current_char
+            self.advance()
+            escape_character = False
+        
+        self.advance()
+        return Token(T_STRING, string_value, pos_start, self.pos)
 
 #######################################
 # NODES
 #######################################
 
 class NumberNode:
+    def __init__(self, tok):
+        self.tok = tok
+
+        self.pos_start = self.tok.pos_start
+        self.pos_end = self.tok.pos_end
+
+    def __repr__(self):
+        return f'{self.tok}'
+
+class StringNode:
     def __init__(self, tok):
         self.tok = tok
 
@@ -787,10 +827,15 @@ class Parser:
         res = ParseResult()
         tok = self.current_tok
 
-        if tok.type in (T_NUM, T_NUM):
+        if tok.type == T_NUM:
             res.register_advancement()
             self.advance()
             return res.success(NumberNode(tok))
+        
+        if tok.type == T_STRING:
+            res.register_advancement()
+            self.advance()
+            return res.success(StringNode(tok))
 
         elif tok.type == T_IDENTIFIER:
             res.register_advancement()
@@ -1044,7 +1089,6 @@ class Value:
             self.context
         )
 
-
 class Number(Value):
     def __init__(self, value):
         super().__init__()
@@ -1182,6 +1226,46 @@ class Number(Value):
     def __repr__(self):
         return str(self.value)
 
+class String(Value):
+    def __init__(self, value):
+        super().__init__()
+        self.value = value
+    
+    def added_to(self, other):
+        if isinstance(other, String):
+            return String(self.value + other.value).set_context(self.context), None
+        elif isinstance(other, Number):
+            return String(self.value + str(other.value)).set_context(self.context), None
+        else:
+            return None, Value.illegal_operation(self, other)
+    
+    def multed_by(self, other):
+        if isinstance(other, Number):
+            if other.value > 0:
+                if type(other.value) == int:
+                    return String(self.value * other.value).set_context(self.context), None
+                else:
+                    if int(other.value) == other.value:
+                        return String(self.value * int(other.value)).set_context(self.context), None
+                    else:
+                        return None, Value.illegal_operation(self, other)
+            else:
+                return None, Value.illegal_operation(self, other)
+        else:
+            return None, Value.illegal_operation(self, other)
+    
+    def is_true(self):
+        return len(self.value) > 0
+    
+    def copy(self):
+        copy = String(self.value)
+        copy.set_pos(self.pos_start, self.pos_end)
+        copy.set_context(self.context)
+        return copy
+    
+    def __repr__(self):
+        return f'"{self.value}"'
+
 class Function(Value):
     def __init__(self, name, body_node, arg_names):
         super().__init__()
@@ -1278,6 +1362,11 @@ class Interpreter:
     def visit_NumberNode(self, node, context):
         return RTResult().success(
             Number(node.tok.value).set_context(context).set_pos(node.pos_start, node.pos_end)
+        )
+    
+    def visit_StringNode(self, node, context):
+        return RTResult().success(
+            String(node.tok.value).set_context(context).set_pos(node.pos_start, node.pos_end)
         )
 
     def visit_VarAccessNode(self, node, context):
