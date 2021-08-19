@@ -18,6 +18,6 @@ LTHC support basic mathematical operator: **+ (addition), - (substraction, arith
 
 For more details see the tutorial
 
-### Tutorial
+## Tutorial
 
 <a href="./TUTORIAL.md">tutorial (under writting)</a>
