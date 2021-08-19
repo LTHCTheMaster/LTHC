@@ -57,3 +57,10 @@ You can assign to an other variable a 'FUNCTION' (created with ``FUNC``) or a 'B
 You can concatenate two strings with the ``+`` operator
 
 You can replicate a string multiple times with the ``*`` operator and a number (or a 'NUM')
+
+<div align="center">
+<img src="./images/examples_repli_str.png">
+
+Example of replication
+
+<div align="left">
