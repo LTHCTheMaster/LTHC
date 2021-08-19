@@ -1,5 +1,11 @@
 statements
-        : NEWLINE* expr (NEWLINE+ expr)* NEWLINE*
+        : NEWLINE* statement (NEWLINE+ statement)* NEWLINE*
+
+statement
+        : KEYWORD:RETURN expr?
+        : KEYWORD:CONTINUE
+        : KEYWORD:BREAK
+        : expr
 
 expr
         : KEYWORD:VAR IDENTIFIER EQ expr
@@ -39,28 +45,28 @@ list-expr
 
 if-expr
         : KEYWORD:IF expr KEYWORD:THEN
-          (expr if-expr-b|if-expr-c?)
+          (statement if-expr-b|if-expr-c?)
         | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
 
 if-expr-b
         : KEYWORD:ELIF expr KEYWORD:THEN
-          (expr if-expr-b|if-expr-c?)
+          (statement if-expr-b|if-expr-c?)
         | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
 
 if-expr-c
         : KEYWORD:ELSE
-          expr
+          statement
         | (NEWLINE statements KEYWORD:END)
 
 for-expr
         : KEYWORD:FOR IDENTIFIER EQ expr KEYWORD:TO expr
           (KEYWORD:STEP expr)? KEYWORD:THEN 
-          expr
+          statement
         | (NEWLINE statements KEYWORD:END)
 
 while-expr
         : KEYWORD:WHILE expr THEN 
-          expr
+          statement
         | (NEWLINE statements KEYWORD:END)
 
 func-def
