@@ -142,4 +142,16 @@ multiple lines syntax: ``WHILE <condition> THEN {new_line} <expressions> {new_li
 
 ``BREAK`` Stop the current loop
 
-``CONTINUE`` Jump to the next iteration of the loop
+``CONTINUE`` Jump to the next iteration of the current loop
+
+## Functions
+
+one line default syntax: ``FUNC func_name(?(<args>)) -> <expression>``
+
+multiple line syntax: ``FUNC func_name(?(<args>)) {new_line} <expressions> {new_line} END``
+
+one line by assignement syntax: ``VAR a_var_name = FUNC (?(<args>)) -> <expression>``
+
+``VAR`` assignement syntax: ``VAR a_var_name = a_defined_function_name``
+
+calling function: ``a_defined_or_assigned_function_name(<the_required_args>)``
