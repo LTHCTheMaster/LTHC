@@ -1937,13 +1937,31 @@ class BuiltInFunction(BaseFunction):
             return RTResult().success(Number(len(val.value)))
         elif isinstance(val, Number):
             return RTResult().success(Number(len(str(val.value))))
+        elif isinstance(val, Function):
+            return RTResult().success(Number(len(val.arg_names)))
         else:
             return RTResult().failure(RTError(
                 self.pos_start, self.pos_end,
-                'Argument cannot be a function',
+                'Argument cannot be a built-in function',
                 exec_ctx
             ))
     execute_len.arg_names = ['val']
+
+    def execute_str(self, exec_ctx):
+        val = exec_ctx.symbol_table.get('val')
+        if isinstance(val, String):
+            return RTResult().success(val)
+        elif isinstance(val, Number):
+            return RTResult().success(String(str(val.value)))
+        elif isinstance(val, List):
+            return RTResult().success(String('; '.join([str(x) for x in val.elements])))
+        else:
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                'Argument cannot be a function or a built-in function',
+                exec_ctx
+            ))
+    execute_str.arg_names = ['val']
 
     def execute_run(self, exec_ctx):
         fn = exec_ctx.symbol_table.get('fn')
@@ -1997,6 +2015,7 @@ BuiltInFunction.pop = BuiltInFunction('pop')
 BuiltInFunction.append = BuiltInFunction('append')
 BuiltInFunction.extend = BuiltInFunction('extend')
 BuiltInFunction.len = BuiltInFunction('len')
+BuiltInFunction.str = BuiltInFunction('str')
 BuiltInFunction.run = BuiltInFunction('run')
 
 #######################################
@@ -2315,6 +2334,7 @@ global_symbol_table.set("POP", BuiltInFunction.pop)
 global_symbol_table.set("APPEND", BuiltInFunction.append)
 global_symbol_table.set("EXTEND", BuiltInFunction.extend)
 global_symbol_table.set("LEN", BuiltInFunction.len)
+global_symbol_table.set("STR", BuiltInFunction.str)
 global_symbol_table.set("RUN", BuiltInFunction.run)
 
 def run(fn, text):
