@@ -159,3 +159,29 @@ calling function: ``a_defined_or_assigned_function_name(<the_required_args>)``
 ### Return
 
 you can add a ``RETURN <something_to_return>`` to your function for customize the returned value
+
+## Builtins
+
+### Functions
+
+``PRINT(val)`` ; ``PRINT_RET(val)`` (output)
+
+``INPUT(msg)`` ; ``INPUT_NUM(msg)`` (input)
+
+``CLEAR()`` (clear the screen)
+
+``IS_NUM(var)`` ; ``IS_STR(var)`` ; ``IS_LIST(var)`` ; ``IS_FUNC(var)`` (type checking function)
+
+``POP(list, index)`` ; ``APPEND(list, val)`` ; ``EXTEND(list1, list2)`` (list manipulation function)
+
+``LEN(val)`` (len of 'val')
+
+``STR(val)`` (cast to 'STRING' type)
+
+``RUN(path)`` (run a .lthc file (LTHC Script))
+
+### Variables
+
+``NULL`` ; ``TRUE`` ; ``FALSE`` ; ``PHI`` ; ``E`` ; ``PI`` ; ``TAU`` ('NUM' type)
+
+``DIGITS`` ('STRING' type)
