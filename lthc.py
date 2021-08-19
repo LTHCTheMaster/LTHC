@@ -196,11 +196,16 @@ class Lexer:
         tokens = []
 
         while self.current_char != None:
-            if self.current_char in ' \t':
+            if self.current_char == ' ':
                 self.advance()
-            if self.current_char == '#':
+            elif self.current_char == '\t':
+                self.advance()
+            elif self.current_char == '#':
                 self.skip_comment()
-            elif self.current_char in ';\n':
+            elif self.current_char == ';':
+                tokens.append(Token(T_NEWLINE, pos_start=self.pos))
+                self.advance()
+            elif self.current_char == '\n':
                 tokens.append(Token(T_NEWLINE, pos_start=self.pos))
                 self.advance()
             elif self.current_char in DIGITS:
@@ -1610,6 +1615,8 @@ class String(Value):
     def __repr__(self):
         return f'"{self.value}"'
 
+String.digits = String(DIGITS_)
+
 class List(Value):
     def __init__(self, elements):
         super().__init__()
@@ -1621,9 +1628,29 @@ class List(Value):
         return new_list, None
     
     def multed_by(self, other):
-        if isinstance(other, List):
+        if isinstance(other, Number):
             new_list = self.copy()
-            new_list.elements.extend(other.elements)
+            if other.value > 0:
+                if type(other.value) == int:
+                    new_list.elements = new_list.elements * other.value
+                    return new_list, None
+                else:
+                    if int(other.value) == other.value:
+                        new_list.elements = new_list.elements * int(other.value)
+                        return new_list, None
+                    else:
+                        return None, Value.illegal_operation(self, other)
+            else:
+                return None, Value.illegal_operation(self, other)
+        else:
+            return None, Value.illegal_operation(self, other)
+    
+    def powed_by(self, other):
+        if isinstance(other, Number):
+            new_list = self.copy()
+            for i in range(len(new_list.elements)):
+                if isinstance(new_list.elements[i], Number) or isinstance(new_list.elements[i], String):
+                    new_list.elements[i] = new_list.elements[i].value * other.value
             return new_list, None
         else:
             return None, Value.illegal_operation(self, other)
@@ -1656,6 +1683,14 @@ class List(Value):
         else:
             return None, Value.illegal_operation(self, other)
     
+    def moded_by(self, other):
+        if isinstance(other, List):
+            new_list = self.copy()
+            new_list.elements.extend(other.elements)
+            return new_list, None
+        else:
+            return None, Value.illegal_operation(self, other)
+
     def is_true(self):
         return len(self.elements) > 0
 
@@ -2266,6 +2301,7 @@ global_symbol_table.set("PHI", Number.phi)
 global_symbol_table.set("E", Number.e)
 global_symbol_table.set("PI", Number.pi)
 global_symbol_table.set("TAU", Number.tau)
+global_symbol_table.set("DIGITS", String.digits)
 global_symbol_table.set("PRINT", BuiltInFunction.print)
 global_symbol_table.set("PRINT_RET", BuiltInFunction.print_ret)
 global_symbol_table.set("INPUT", BuiltInFunction.input)
