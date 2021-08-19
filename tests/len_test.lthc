@@ -1,0 +1,27 @@
+CLEAR()
+
+# len_a must be 5
+VAR a = -5.17
+VAR len_a = LEN(a)
+PRINT(a)
+PRINT(len_a)
+
+# len_b must be 5
+VAR b = "abcde"
+VAR len_b = LEN(b)
+PRINT(b)
+PRINT(len_b)
+
+# len_c must be 3
+VAR c = [1,2,3]
+VAR len_c = LEN(c)
+PRINT("[" + STR(c) + "]")
+PRINT(len_c)
+
+# len_d must be 1
+VAR d = FUNC (a) -> a
+VAR len_d = LEN(d)
+PRINT(d)
+PRINT(len_d)
+
+PRINT("")
