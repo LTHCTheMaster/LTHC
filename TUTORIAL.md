@@ -48,7 +48,7 @@ You can create a 'NUM' type variable with a number
 
 You can create a 'STRING' type variable with a string, a string is created by surrounding a text with ``"`` , the escape charater is ``\``
 
-You can create a 'LIST' type variable with value between square brackets (``[]``)
+You can create a 'LIST' type variable with value ('LIST' are separed as more simple values in other list) between square brackets (``[]``)
 
 You can assign to an other variable a 'FUNCTION' (created with ``FUNC``) or a 'BUILT-IN_FUNCTION'
 
@@ -64,3 +64,17 @@ You can replicate a string multiple times with the ``*`` operator and a number (
 Example of replication
 
 <div align="left">
+
+## List manipulation
+
+Append and extend: ``listA + listB``
+
+Extend: ``listA % listB``
+
+Get the element at index b in a list: ``listA / b``
+
+Remove (pop) the element at index b in a list: ``listA - b``
+
+Replicate a list multiple times: ``listA * b``
+
+Multiply each value of a list by an other value: ``listA ^ b`` (b is the other value)
