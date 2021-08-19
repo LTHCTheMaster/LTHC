@@ -78,3 +78,10 @@ Remove (pop) the element at index b in a list: ``listA - b``
 Replicate a list multiple times: ``listA * b``
 
 Multiply each value of a list by an other value: ``listA ^ b`` (b is the other value)
+
+<div align="center">
+<img src="./images/examples_list.png">
+
+Examples of list manipulation
+
+<div align="left">
