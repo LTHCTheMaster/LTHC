@@ -40,7 +40,7 @@ power operator:                    ``2 ^ 4``
 
 ## Playing with 'VAR'
 
-With the ``VAR`` keyword, you can create variables, there are 3 direct variables types and 2 more special types
+With the ``VAR`` keyword, you can create and modify variables, there are 3 direct variables types and 2 more special types
 
 Use: ``VAR the_name_of_the_variable = <expression>``
 
