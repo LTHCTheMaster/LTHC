@@ -198,6 +198,8 @@ class Lexer:
         while self.current_char != None:
             if self.current_char in ' \t':
                 self.advance()
+            if self.current_char == '#':
+                self.skip_comment()
             elif self.current_char in ';\n':
                 tokens.append(Token(T_NEWLINE, pos_start=self.pos))
                 self.advance()
@@ -392,6 +394,14 @@ class Lexer:
         
         self.advance()
         return Token(T_STRING, string_value, pos_start, self.pos)
+    
+    def skip_comment(self):
+        self.advance()
+
+        while self.current_char != '\n':
+            self.advance()
+        
+        self.advance()
 
 #######################################
 # NODES
@@ -1646,6 +1656,9 @@ class List(Value):
         else:
             return None, Value.illegal_operation(self, other)
     
+    def is_true(self):
+        return len(self.elements) > 0
+
     def copy(self):
         copy = List(self.elements)
         copy.set_pos(self.pos_start, self.pos_end)
@@ -1880,6 +1893,62 @@ class BuiltInFunction(BaseFunction):
         return RTResult().success(element)
     execute_pop.arg_names = ['list', 'index']
 
+    def execute_len(self, exec_ctx):
+        val = exec_ctx.symbol_table.get('val')
+        
+        if isinstance(val, List):
+            return RTResult().success(Number(len(val.elements)))
+        elif isinstance(val, String):
+            return RTResult().success(Number(len(val.value)))
+        elif isinstance(val, Number):
+            return RTResult().success(Number(len(str(val.value))))
+        else:
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                'Argument cannot be a function',
+                exec_ctx
+            ))
+    execute_len.arg_names = ['val']
+
+    def execute_run(self, exec_ctx):
+        fn = exec_ctx.symbol_table.get('fn')
+
+        if not isinstance(fn, String):
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                'Argument must be a string',
+                exec_ctx
+            ))
+        
+        fn = fn.value
+        try:
+            if fn.endswith('.lthc'):
+                script = open(fn, 'r').read()
+            else:
+                return RTResult().failure(RTError(
+                    self.pos_start, self.pos_end,
+                    f"{fn} is not a .lthc file so it isn't a LTHC Script",
+                    exec_ctx
+                ))
+        except Exception as e:
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                f'Failed to load script "{fn}"\n' + str(e),
+                exec_ctx
+            ))
+        
+        _, error = run(fn, script)
+
+        if error:
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                f'Failed to finish executing script "{fn}"\n' + error.as_string(),
+                exec_ctx
+            ))
+        
+        return RTResult().success(Number.null)
+    execute_run.arg_names = ['fn']
+
 BuiltInFunction.print = BuiltInFunction('print')
 BuiltInFunction.print_ret = BuiltInFunction('print_ret')
 BuiltInFunction.input = BuiltInFunction('input')
@@ -1892,6 +1961,8 @@ BuiltInFunction.is_function = BuiltInFunction('is_function')
 BuiltInFunction.pop = BuiltInFunction('pop')
 BuiltInFunction.append = BuiltInFunction('append')
 BuiltInFunction.extend = BuiltInFunction('extend')
+BuiltInFunction.len = BuiltInFunction('len')
+BuiltInFunction.run = BuiltInFunction('run')
 
 #######################################
 # CONTEXT
@@ -2207,6 +2278,8 @@ global_symbol_table.set("IS_FUNC", BuiltInFunction.is_function)
 global_symbol_table.set("POP", BuiltInFunction.pop)
 global_symbol_table.set("APPEND", BuiltInFunction.append)
 global_symbol_table.set("EXTEND", BuiltInFunction.extend)
+global_symbol_table.set("LEN", BuiltInFunction.len)
+global_symbol_table.set("RUN", BuiltInFunction.run)
 
 def run(fn, text):
     # Generate tokens
