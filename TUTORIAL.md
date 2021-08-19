@@ -48,9 +48,16 @@ You can create a 'NUM' type variable with a number
 
 You can create a 'STRING' type variable with a string, a string is created by surrounding a text with ``"`` , the escape charater is ``\``
 
-You can create a 'LIST' type variable with value ('LIST' are separed as more simple values in other list) between square brackets (``[]``)
+You can create a 'LIST' type variable with value ('LIST' are separed as more simple values in other 'LIST') between square brackets (``[]``)
 
 You can assign to an other variable a 'FUNCTION' (created with ``FUNC``) or a 'BUILT-IN_FUNCTION'
+
+<div align="center">
+<img src="./images/list_clue.png">
+
+Example of list simplifying
+
+<div align="left">
 
 ## String manipulation
 
