@@ -42,8 +42,18 @@ power operator:                    ``2 ^ 4``
 
 With the ``VAR`` keyword, you can create variables, there are 3 direct variables types and 2 more special types
 
+Use: ``VAR the_name_of_the_variable = <expression>``
+
 You can create a 'NUM' type variable with a number
 
 You can create a 'STRING' type variable with a string, a string is created by surrounding a text with ``"`` , the escape charater is ``\``
 
 You can create a 'LIST' type variable with value between square brackets (``[]``)
+
+You can assign to an other variable a 'FUNCTION' (created with ``FUNC``) or a 'BUILT-IN_FUNCTION'
+
+## String manipulation
+
+You can concatenate two strings with the ``+`` operator
+
+You can replicate a string multiple times with the ``*`` operator and a number (or a 'NUM')
