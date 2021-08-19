@@ -92,3 +92,54 @@ Multiply each value of a list by an other value: ``listA ^ b`` (b is the other v
 Examples of list manipulation
 
 <div align="left">
+
+## Info
+
+In the shell you can simulate multiple lines with ``;``
+
+## Conditions
+
+one line syntax: ``IF <condition> THEN <expression> ?(ELIF <condition> THEN <expression>) ?(ELSE <expression>)``
+
+multiple lines syntax: ``IF <condition> THEN {new_line} <expressions> {new_line} END|?(ELIF <condition> THEN {new_line} <expressions> {new_line} END|(ELSE {new_line} <expressions> {new_line} END))|?(ELSE {new_line} <expressions> {new_line} END)``
+
+<div align="center">
+<img src="./images/if_elif_else.png">
+
+Examples of simple conditions
+
+<div align="left">
+
+### Logic and comparison operator
+
+#### Logic
+
+``a AND b`` ; ``a OR b`` ; ``NOT a``
+
+#### Comparison
+
+``a == b`` ; ``a != b`` ; ``a =! b`` ; ``a > b`` ; ``a < b`` ; ``a >= b`` ; ``a => b`` ; ``a <= b`` ; ``a =< b``
+
+## Loops
+
+### For Loop
+
+one line default syntax: ``FOR var_name = start_value TO end_value THEN <expression>``
+
+multiple lines default syntax: ``FOR var_name = start_value TO end_value THEN {new_line} <expressions> {new_line} END``
+
+one line with ``STEP`` syntax: ``FOR var_name = start_value TO end_value STEP step_value THEN <expression>``
+
+multiple lines with ``STEP`` syntax: ``FOR var_name = start_value TO end_value STEP step_value THEN {new_line} <expressions> {new_line} END``
+
+### While Loop
+
+one line syntax: ``WHILE <condition> THEN <expression>``
+
+multiple lines syntax: ``WHILE <condition> THEN {new_line} <expressions> {new_line} END``
+
+### Break and Continue
+
+``BREAK`` Stop the current loop
+
+``CONTINUE`` Jump to the next iteration of the loop
