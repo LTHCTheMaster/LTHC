@@ -13,7 +13,8 @@ LTHC is a programming language inspired by basic and interpreted with an interpr
 LTHC Script file are .lthc file
 
 This programming language has 5 types: **Number**, **String**, **List**, **Function** and **BuiltInFunction**
-LTHC support basic mathematical operator: + (addition), - (substraction, arithmetical negation), * (multiplication), / (division), // (the quotient of an euclidean division), % (modulo), ^ (power operator)
+
+LTHC support basic mathematical operator: **+ (addition), - (substraction, arithmetical negation), * (multiplication), / (division), // (the quotient of an euclidean division), % (modulo), ^ (power operator)**
 
 ### Tutorial
 
