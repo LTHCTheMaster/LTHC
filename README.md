@@ -16,6 +16,8 @@ This programming language has 5 types: **Number**, **String**, **List**, **Funct
 
 LTHC support basic mathematical operator: **+ (addition), - (substraction, arithmetical negation), * (multiplication), / (division), // (the quotient of an euclidean division), % (modulo), ^ (power operator)**
 
+For more details see the tutorial
+
 ### Tutorial
 
 <a href="./TUTORIAL.md">tutorial (under writting)</a>
