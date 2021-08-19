@@ -20,4 +20,4 @@ For more details see the tutorial
 
 ## Tutorial
 
-<a href="./TUTORIAL.md">tutorial (under writting)</a>
+<a href="./TUTORIAL.md">tutorial</a>
