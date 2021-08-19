@@ -37,3 +37,13 @@ quotient of an euclidean division: ``17.3 // 2.2``
 modulo:                            ``15 % 7``
 
 power operator:                    ``2 ^ 4``
+
+## Playing with 'VAR'
+
+With the ``VAR`` keyword, you can create variables, there are 3 direct variables types and 2 more special types
+
+You can create a 'NUM' type variable with a number
+
+You can create a 'STRING' type variable with a string, a string is created by surrounding a text with ``"`` , the escape charater is ``\``
+
+You can create a 'LIST' type variable with value between square brackets (``[]``)
