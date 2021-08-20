@@ -1,32 +1,32 @@
 # This is a very useful piece of software
 
-FUNC oopify(prefix) -> prefix + "oop"
+func oopify(prefix) -> prefix + "oop"
 
-FUNC map(elements, function)
-    VAR new_elements = []
-    VAR len = LEN(elements)
+func map(elements, function)
+    var new_elements = []
+    var len_ = len(elements)
 
-    FOR i = 0 TO len THEN
-        APPEND(new_elements, function(elements/i))
-    END
+    for i = 0 to len_ then
+        append(new_elements, function(elements/i))
+    end
     
-    RETURN new_elements
-END
+    return new_elements
+end
 
-FUNC join(elements, separator)
-    VAR result = ""
-    VAR len = LEN(elements)
+func join(elements, separator)
+    var result = ""
+    var len_ = len(elements)
 
-    FOR i = 0 TO len THEN
-        VAR result = result + elements/i
-        IF i != len - 1 THEN VAR result = result + separator
-    END
+    for i = 0 to len_ then
+        var result = result + elements/i
+        if i != len_ - 1 then var result = result + separator
+    end
 
-    RETURN result
-END
+    return result
+end
 
-PRINT("Greetings universe!")
+print("Greetings universe!")
 
-FOR i = 0 TO 5 THEN
-    PRINT(join(map(["l","sp"], oopify), ", "))
-END
+for i = 0 to 5 then
+    print(join(map(["l","sp"], oopify), ", "))
+end

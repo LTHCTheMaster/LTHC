@@ -38,11 +38,11 @@ modulo:                            ``15 % 7``
 
 power operator:                    ``2 ^ 4``
 
-## Playing with 'VAR'
+## Playing with 'var'
 
-With the ``VAR`` keyword, you can create and modify variables, there are 3 direct variables types and 2 more special types
+With the ``var`` keyword, you can create and modify variables, there are 3 direct variables types and 2 more special types
 
-Use: ``VAR the_name_of_the_variable = <expression>``
+Use: ``var the_name_of_the_variable = <expression>``
 
 You can create a 'NUM' type variable with a number
 
@@ -50,7 +50,7 @@ You can create a 'STRING' type variable with a string, a string is created by su
 
 You can create a 'LIST' type variable with value ('LIST' are separed as more simple values in other 'LIST') between square brackets (``[]``)
 
-You can assign to an other variable a 'FUNCTION' (created with ``FUNC``) or a 'BUILT-IN_FUNCTION'
+You can assign to an other variable a 'FUNCTION' (created with ``func``) or a 'BUILT-IN_FUNCTION'
 
 <div align="center">
 <img src="./images/list_clue.png">
@@ -88,7 +88,7 @@ Replicate a list multiple times: ``listA * b``
 
 Multiply each value of a list by an other value: ``listA ^ b`` (b is the other value)
 
-You can reverse a list by using: ``NOT listA``
+You can reverse a list by using: ``not listA``
 
 <div align="center">
 <img src="./images/examples_list.png">
@@ -103,9 +103,9 @@ In the shell you can simulate multiple lines with ``;``
 
 ## Conditions
 
-one line syntax: ``IF <condition> THEN <expression> ?(ELIF <condition> THEN <expression>) ?(ELSE <expression>)``
+one line syntax: ``if <condition> then <expression> ?(elif <condition> then <expression>) ?(else <expression>)``
 
-multiple lines syntax: ``IF <condition> THEN {new_line} <expressions> {new_line} END|?(ELIF <condition> THEN {new_line} <expressions> {new_line} END|(ELSE {new_line} <expressions> {new_line} END))|?(ELSE {new_line} <expressions> {new_line} END)``
+multiple lines syntax: ``if <condition> then {new_line} <expressions> {new_line} end|?(elif <condition> then {new_line} <expressions> {new_line} end|(else {new_line} <expressions> {new_line} end))|?(else {new_line} <expressions> {new_line} end)``
 
 <div align="center">
 <img src="./images/if_elif_else.png">
@@ -118,7 +118,7 @@ Examples of simple conditions
 
 #### Logic
 
-``a AND b`` ; ``a OR b`` ; ``NOT a``
+``a and b`` ; ``a or b`` ; ``not a``
 
 #### Comparison
 
@@ -128,59 +128,59 @@ Examples of simple conditions
 
 ### For Loop
 
-one line default syntax: ``FOR var_name = start_value TO end_value THEN <expression>``
+one line default syntax: ``for var_name = start_value to end_value then <expression>``
 
-multiple lines default syntax: ``FOR var_name = start_value TO end_value THEN {new_line} <expressions> {new_line} END``
+multiple lines default syntax: ``for var_name = start_value to end_value then {new_line} <expressions> {new_line} end``
 
-one line with ``STEP`` syntax: ``FOR var_name = start_value TO end_value STEP step_value THEN <expression>``
+one line with ``step`` syntax: ``for var_name = start_value to end_value step step_value then <expression>``
 
-multiple lines with ``STEP`` syntax: ``FOR var_name = start_value TO end_value STEP step_value THEN {new_line} <expressions> {new_line} END``
+multiple lines with ``step`` syntax: ``for var_name = start_value to end_value step step_value then {new_line} <expressions> {new_line} end``
 
 ### While Loop
 
-one line syntax: ``WHILE <condition> THEN <expression>``
+one line syntax: ``while <condition> then <expression>``
 
-multiple lines syntax: ``WHILE <condition> THEN {new_line} <expressions> {new_line} END``
+multiple lines syntax: ``while <condition> then {new_line} <expressions> {new_line} end``
 
 ### Break and Continue
 
-``BREAK`` Stop the current loop
+``break`` Stop the current loop
 
-``CONTINUE`` Jump to the next iteration of the current loop
+``continue`` Jump to the next iteration of the current loop
 
 ## Functions
 
-one line default syntax: ``FUNC func_name(?(<args>)) -> <expression>``
+one line default syntax: ``func func_name(?(<args>)) -> <expression>``
 
-multiple line syntax: ``FUNC func_name(?(<args>)) {new_line} <expressions> {new_line} END``
+multiple line syntax: ``func func_name(?(<args>)) {new_line} <expressions> {new_line} end``
 
-one line by assignement syntax: ``VAR a_var_name = FUNC (?(<args>)) -> <expression>``
+one line by assignement syntax: ``var a_var_name = func (?(<args>)) -> <expression>``
 
-``VAR`` assignement syntax: ``VAR a_var_name = a_defined_function_name``
+``var`` assignement syntax: ``var a_var_name = a_defined_function_name``
 
 calling function: ``a_defined_or_assigned_function_name(<the_required_args>)``
 
 ### Return
 
-you can add a ``RETURN <something_to_return>`` to your function for customize the returned value
+you can add a ``return <something_to_return>`` to your function for customize the returned value
 
 ## Builtins
 
 ### Functions
 
-``PRINT(val)`` ; ``PRINT_RET(val)`` (output)
+``print(val)`` ; ``print_ret(val)`` (output)
 
-``INPUT(msg)`` ; ``INPUT_NUM(msg)`` (input)
+``input(msg)`` ; ``input_num(msg)`` (input)
 
-``CLEAR()`` (clear the screen)
+``clear()`` (clear the screen)
 
-``IS_NUM(var)`` ; ``IS_STR(var)`` ; ``IS_LIST(var)`` ; ``IS_FUNC(var)`` (type checking function)
+``is_num(var)`` ; ``is_str(var)`` ; ``is_list(var)`` ; ``is_func(var)`` (type checking function)
 
-``POP(list, index)`` ; ``APPEND(list, val)`` ; ``EXTEND(list1, list2)`` (list manipulation function)
+``pop(list, index)`` ; ``append(list, val)`` ; ``extend(list1, list2)`` (list manipulation function)
 
-``LEN(val)`` (len of 'val')
+``len(val)`` (len of 'val')
 
-``STR(val)`` (cast to 'STRING' type)
+``str(val)`` (cast to 'STRING' type)
 
 ``RUN(path)`` (run a .lthc file (LTHC Script))
 
@@ -214,27 +214,27 @@ In this work, we have to upgrade the script with more tests in functions to avoi
 
 First function to upgrade:
 
-``FUNC oopify(prefix) -> prefix + "oop"``
+``func oopify(prefix) -> prefix + "oop"``
 
--> We want to cast prefix to 'STRING' type so we replace ``prefix`` by ``STR(prefix)`` and we obtain:
+-> We want to cast prefix to 'STRING' type so we replace ``prefix`` by ``str(prefix)`` and we obtain:
 
-``FUNC oopify(prefix) -> STR(prefix) + "oop"``
+``func oopify(prefix) -> str(prefix) + "oop"``
 
 <br>
 
 Now we have to upgrade the map function:
 
 ```
-FUNC map(elements, function)
-    VAR new_elements = []
-    VAR len = LEN(elements)
+func map(elements, function)
+    var new_elements = []
+    var len_ = len(elements)
 
-    FOR i = 0 TO len THEN
-        APPEND(new_elements, function(elements/i))
-    END
+    for i = 0 to len_ then
+        append(new_elements, function(elements/i))
+    end
     
-    RETURN new_elements
-END
+    return new_elements
+end
 ```
 
 First point, if elements is a 'LIST' type variable, assign the len variable to the len of elements else return a list with one single string which represent a space (so ``[" "]`` ),
@@ -246,20 +246,20 @@ third point, if len2 is not equals to 1 return a list with one single string whi
 Now we have this function:
 
 ```
-FUNC map(elements, function)
-    VAR new_elements = []
-    IF IS_LIST(elements) THEN VAR len = LEN(elements) ELSE RETURN [" "]
+func map(elements, function)
+    var new_elements = []
+    if is_list(elements) then var len_ = len(elements) else return [" "]
 
-    IF IS_FUNC(function) THEN VAR len2 = LEN(function) ELSE RETURN [" "]
+    if is_func(function) then var len2 = len(function) else return [" "]
 
-    IF len2 != 1 THEN RETURN [" "]
+    if len2 != 1 then return [" "]
 
-    FOR i = 0 TO len THEN
-        APPEND(new_elements, function(elements/i))
-    END
+    for i = 0 to len_ then
+        append(new_elements, function(elements/i))
+    end
     
-    RETURN new_elements
-END
+    return new_elements
+end
 ```
 
 <br>
@@ -267,45 +267,45 @@ END
 The last function to upgrade is the join function:
 
 ```
-FUNC join(elements, separator)
-    VAR result = ""
-    VAR len = LEN(elements)
+func join(elements, separator)
+    var result = ""
+    var len_ = len(elements)
 
-    FOR i = 0 TO len THEN
-        VAR result = result + elements/i
-        IF i != len - 1 THEN VAR result = result + separator
-    END
+    for i = 0 to len_ then
+        var result = result + elements/i
+        if i != len_ - 1 then var result = result + separator
+    end
 
-    RETURN result
-END
+    return result
+end
 ```
 
-To check the if elements is a list we have to add between the firt result var assignement and the loop: ``IF IS_LIST(elements) THEN VAR len = LEN(elements) ELSE RETURN " "`` , with this line you check the type of elements if it isn't a list you return a space
+To check the if elements is a list we have to add between the firt result var assignement and the loop: ``if is_list(elements) then var len_ = len(elements) else return " "`` , with this line you check the type of elements if it isn't a list you return a space
 
 Replace the content of the loop by:
 
 ```
-VAR result = result + STR(elements/i)
-IF i != len - 1 THEN VAR result = result + STR(separator)
+var result = result + str(elements/i)
+if i != len_ - 1 then var result = result + str(separator)
 ```
 
-In this line we only add a ``STR`` casting
+In this line we only add a ``str`` casting
 
 So now we have this function:
 
 ```
-FUNC join(elements, separator)
-    VAR result = ""
+func join(elements, separator)
+    var result = ""
     
-    IF IS_LIST(elements) THEN VAR len = LEN(elements) ELSE RETURN " "
+    if is_list(elements) then var len_ = len(elements) else return " "
 
-    FOR i = 0 TO len THEN
-        VAR result = result + STR(elements/i)
-        IF i != len - 1 THEN VAR result = result + STR(separator)
-    END
+    for i = 0 to len_ then
+        var result = result + str(elements/i)
+        if i != len_ - 1 then var result = result + str(separator)
+    end
 
-    RETURN result
-END
+    return result
+end
 ```
 
 <a href="./tutorial_work/upgraded_example.lthc">link</a> to the upgraded file

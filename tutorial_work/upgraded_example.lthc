@@ -1,39 +1,39 @@
-CLEAR()
+clear()
 
-FUNC oopify(prefix) -> STR(prefix) + "oop"
+func oopify(prefix) -> str(prefix) + "oop"
 
-FUNC map(elements, function)
-    VAR new_elements = []
-    IF IS_LIST(elements) THEN VAR len = LEN(elements) ELSE RETURN [" "]
+func map(elements, function)
+    var new_elements = []
+    if is_list(elements) then var len_ = len(elements) else return [" "]
 
-    IF IS_FUNC(function) THEN VAR len2 = LEN(function) ELSE RETURN [" "]
+    if is_func(function) then var len2 = len(function) else return [" "]
 
-    IF len2 != 1 THEN RETURN [" "]
+    if len2 != 1 then return [" "]
 
-    FOR i = 0 TO len THEN
-        APPEND(new_elements, function(elements/i))
-    END
+    for i = 0 TO len_ then
+        append(new_elements, function(elements/i))
+    end
     
-    RETURN new_elements
-END
+    return new_elements
+end
 
-FUNC join(elements, separator)
-    VAR result = ""
+func join(elements, separator)
+    var result = ""
     
-    IF IS_LIST(elements) THEN VAR len = LEN(elements) ELSE RETURN " "
+    if is_list(elements) then var len_ = len(elements) else return " "
 
-    FOR i = 0 TO len THEN
-        VAR result = result + STR(elements/i)
-        IF i != len - 1 THEN VAR result = result + STR(separator)
-    END
+    for i = 0 to len_ then
+        var result = result + str(elements/i)
+        if i != len_ - 1 then var result = result + str(separator)
+    end
 
-    RETURN result
-END
+    return result
+end
 
-PRINT("Greetings universe!")
+print("Greetings universe!")
 
-FOR i = 0 TO 5 THEN
-    PRINT(join(map(["l","sp"], oopify), ", "))
-END
+for i = 0 to 5 then
+    print(join(map(["l","sp"], oopify), ", "))
+end
 
-PRINT("")
+print("")
