@@ -206,6 +206,8 @@ You can found the example script <a href="./example.lthc">here</a>
 
 In this work, we have to upgrade the script with more tests in functions to avoid all potential error
 
+<br>
+
 First function to upgrade:
 
 ``FUNC oopify(prefix) -> prefix + "oop"``
@@ -213,6 +215,8 @@ First function to upgrade:
 -> We want to cast prefix to 'STRING' type so we replace ``prefix`` by ``STR(prefix)`` and we obtain:
 
 ``FUNC oopify(prefix) -> STR(prefix) + "oop"``
+
+<br>
 
 Now we have to upgrade the map function:
 
@@ -253,3 +257,51 @@ FUNC map(elements, function)
     RETURN new_elements
 END
 ```
+
+<br>
+
+The last function to upgrade is the join function:
+
+```
+FUNC join(elements, separator)
+    VAR result = ""
+    VAR len = LEN(elements)
+
+    FOR i = 0 TO len THEN
+        VAR result = result + elements/i
+        IF i != len - 1 THEN VAR result = result + separator
+    END
+
+    RETURN result
+END
+```
+
+To check the if elements is a list we have to add between the firt result var assignement and the loop: ``IF IS_LIST(elements) THEN VAR len = LEN(elements) ELSE RETURN " "`` , with this line you check the type of elements if it isn't a list you return a space
+
+Replace the content of the loop by:
+
+```
+VAR result = result + STR(elements/i)
+IF i != len - 1 THEN VAR result = result + STR(separator)
+```
+
+In this line we only add a ``STR`` casting
+
+So now we have this function:
+
+```
+FUNC join(elements, separator)
+    VAR result = ""
+    
+    IF IS_LIST(elements) THEN VAR len = LEN(elements) ELSE RETURN " "
+
+    FOR i = 0 TO len THEN
+        VAR result = result + STR(elements/i)
+        IF i != len - 1 THEN VAR result = result + STR(separator)
+    END
+
+    RETURN result
+END
+```
+
+<a href="./tutorial_work/upgraded_example.lthc">link</a> to the upgraded file
