@@ -1600,6 +1600,19 @@ class String(Value):
         else:
             return None, Value.illegal_operation(self, other)
     
+    def dived_by(self, other):
+        if isinstance(other, Number):
+            try:
+                return String(self.value[other.value]).set_context(self.context), None
+            except:
+                return None, RTError(
+                    other.pos_start, other.pos_end,
+                    'Element at this index could not be retrieved from str because index is out of bounds',
+                    self.context
+                )
+        else:
+            return None, Value.illegal_operation(self, other)
+    
     def is_true(self):
         return len(self.value) > 0
     
@@ -1690,6 +1703,11 @@ class List(Value):
             return new_list, None
         else:
             return None, Value.illegal_operation(self, other)
+    
+    def notted(self):
+        new_list = self.copy()
+        new_list.elements = new_list.elements[::-1]
+        return new_list, None
 
     def is_true(self):
         return len(self.elements) > 0

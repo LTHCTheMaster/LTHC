@@ -65,6 +65,8 @@ You can concatenate two strings with the ``+`` operator
 
 You can replicate a string multiple times with the ``*`` operator and a number (or a 'NUM')
 
+You can get the element at index b in your string by using: ``your_string / b``
+
 <div align="center">
 <img src="./images/examples_repli_str.png">
 
@@ -85,6 +87,8 @@ Remove (pop) the element at index b in a list: ``listA - b``
 Replicate a list multiple times: ``listA * b``
 
 Multiply each value of a list by an other value: ``listA ^ b`` (b is the other value)
+
+You can reverse a list by using: ``NOT listA``
 
 <div align="center">
 <img src="./images/examples_list.png">
