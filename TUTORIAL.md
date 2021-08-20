@@ -191,3 +191,40 @@ you can add a ``RETURN <something_to_return>`` to your function for customize th
 To run a file, tou have to type in the shell ``RUN(file_path_between_quotes)``
 
 For example, to run the <a href="./example.lthc">example file</a> you have to type ``RUN("example.lthc")``
+
+<div align="center">
+
+# Guided work
+
+Welcome on the second part of the tutorial, here you can do a guided work
+
+<div align="left">
+
+## Upgrade the example script
+
+You can found the example script <a href="./example.lthc">here</a>
+
+In this work, we have to upgrade the script with more tests in functions to avoid all potential error
+
+First function to upgrade:
+
+```FUNC oopify(prefix) -> prefix + "oop"```
+
+-> We want to cast prefix to 'STRING' type so we replace ``prefix`` by ``STR(prefix)`` and we obtain:
+
+```FUNC oopify(prefix) -> STR(prefix) + "oop"```
+
+Now we have to upgrade the map function:
+
+```
+FUNC map(elements, function)
+    VAR new_elements = []
+    VAR len = LEN(elements)
+
+    FOR i = 0 TO len THEN
+        APPEND(new_elements, function(elements/i))
+    END
+    
+    RETURN new_elements
+END
+```

@@ -1,0 +1,39 @@
+CLEAR()
+
+FUNC oopify(prefix) -> STR(prefix) + "oop"
+
+FUNC map(elements, function)
+    VAR new_elements = []
+    IF IS_LIST(elements) THEN VAR len = LEN(elements) ELSE RETURN [" "]
+
+    IF IS_FUNC(function) THEN VAR len = LEN(function) ELSE RETURN [" "]
+
+    IF len != 1 THEN RETURN [" "]
+
+    FOR i = 0 TO len THEN
+        APPEND(new_elements, function(elements/i))
+    END
+    
+    RETURN new_elements
+END
+
+FUNC join(elements, separator)
+    VAR result = ""
+    
+    IF IS_LIST(elements) THEN VAR len = LEN(elements) ELSE RETURN " "
+
+    FOR i = 0 TO len THEN
+        VAR result = result + STR(elements/i)
+        IF i != len - 1 THEN VAR result = result + STR(separator)
+    END
+
+    RETURN result
+END
+
+PRINT("Greetings universe!")
+
+FOR i = 0 TO 5 THEN
+    PRINT(join(map(["l","sp"], oopify), ", "))
+END
+
+PRINT("")
