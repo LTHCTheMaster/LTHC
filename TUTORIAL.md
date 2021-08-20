@@ -185,3 +185,9 @@ you can add a ``RETURN <something_to_return>`` to your function for customize th
 ``NULL`` ; ``TRUE`` ; ``FALSE`` ; ``PHI`` ; ``E`` ; ``PI`` ; ``TAU`` ('NUM' type)
 
 ``DIGITS`` ('STRING' type)
+
+## Run Usage
+
+To run a file, tou have to type in the shell ``RUN(file_path_between_quotes)``
+
+For example, to run the <a href="./example.lthc">example file</a> you have to type ``RUN("example.lthc")``
