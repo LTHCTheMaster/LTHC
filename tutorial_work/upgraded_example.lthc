@@ -6,9 +6,9 @@ FUNC map(elements, function)
     VAR new_elements = []
     IF IS_LIST(elements) THEN VAR len = LEN(elements) ELSE RETURN [" "]
 
-    IF IS_FUNC(function) THEN VAR len = LEN(function) ELSE RETURN [" "]
+    IF IS_FUNC(function) THEN VAR len2 = LEN(function) ELSE RETURN [" "]
 
-    IF len != 1 THEN RETURN [" "]
+    IF len2 != 1 THEN RETURN [" "]
 
     FOR i = 0 TO len THEN
         APPEND(new_elements, function(elements/i))

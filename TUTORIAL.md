@@ -208,11 +208,11 @@ In this work, we have to upgrade the script with more tests in functions to avoi
 
 First function to upgrade:
 
-```FUNC oopify(prefix) -> prefix + "oop"```
+``FUNC oopify(prefix) -> prefix + "oop"``
 
 -> We want to cast prefix to 'STRING' type so we replace ``prefix`` by ``STR(prefix)`` and we obtain:
 
-```FUNC oopify(prefix) -> STR(prefix) + "oop"```
+``FUNC oopify(prefix) -> STR(prefix) + "oop"``
 
 Now we have to upgrade the map function:
 
@@ -220,6 +220,31 @@ Now we have to upgrade the map function:
 FUNC map(elements, function)
     VAR new_elements = []
     VAR len = LEN(elements)
+
+    FOR i = 0 TO len THEN
+        APPEND(new_elements, function(elements/i))
+    END
+    
+    RETURN new_elements
+END
+```
+
+First point, if elements is a 'LIST' type variable, assign the len variable to the len of elements else return a list with one single string which represent a space (so ``[" "]`` ),
+
+second point, if function is a 'FUNCTION' type variable, assign the len2 variable to the len of function else return a list with one single string which represent a space (so ``[" "]`` ),
+
+third point, if len2 is not equals to 1 return a list with one single string which represent a space (so ``[" "]`` )
+
+Now we have this function:
+
+```
+FUNC map(elements, function)
+    VAR new_elements = []
+    IF IS_LIST(elements) THEN VAR len = LEN(elements) ELSE RETURN [" "]
+
+    IF IS_FUNC(function) THEN VAR len2 = LEN(function) ELSE RETURN [" "]
+
+    IF len2 != 1 THEN RETURN [" "]
 
     FOR i = 0 TO len THEN
         APPEND(new_elements, function(elements/i))
