@@ -1,11 +1,42 @@
 #######################################
+# STRING WITH ARROWS
+#######################################
+
+def string_with_arrows(text, pos_start, pos_end):
+	result = ''
+
+	# Calculate indices
+	idx_start = max(text.rfind('\n', 0, pos_start.idx), 0)
+	idx_end = text.find('\n', idx_start + 1)
+	if idx_end < 0: idx_end = len(text)
+	
+	# Generate each line
+	line_count = pos_end.ln - pos_start.ln + 1
+	for i in range(line_count):
+		# Calculate line columns
+		line = text[idx_start:idx_end]
+		col_start = pos_start.col if i == 0 else 0
+		col_end = pos_end.col if i == line_count - 1 else len(line) - 1
+
+		# Append to result
+		result += line + '\n'
+		result += ' ' * col_start + '^' * (col_end - col_start)
+
+		# Re-calculate indices
+		idx_start = idx_end
+		idx_end = text.find('\n', idx_start + 1)
+		if idx_end < 0: idx_end = len(text)
+
+	return result.replace('\t', '')
+
+#######################################
 # IMPORTS
 #######################################
 
-from strings_with_arrows import *
-
-import string
-import math
+from string import ascii_letters
+from math import sqrt, e, pi, tau
+from random import randint
+from time import sleep
 
 import os
 
@@ -15,7 +46,7 @@ import os
 
 DIGITS_ = '0123456789'
 DIGITS = DIGITS_ + '.'
-LETTERS = string.ascii_letters
+LETTERS = ascii_letters
 LETTERS_DIGITS = LETTERS + DIGITS_ + '_'
 
 #######################################
@@ -1567,10 +1598,10 @@ class Number(Value):
 Number.null = Number(0)
 Number.true = Number(1)
 Number.false = Number(0)
-Number.phi = Number((1+math.sqrt(5))/2)
-Number.e = Number(math.e)
-Number.pi = Number(math.pi)
-Number.tau = Number(math.tau)
+Number.phi = Number((1+sqrt(5))/2)
+Number.e = Number(e)
+Number.pi = Number(pi)
+Number.tau = Number(tau)
 
 class String(Value):
     def __init__(self, value):
@@ -1965,6 +1996,26 @@ class BuiltInFunction(BaseFunction):
             ))
     execute_len.arg_names = ['val']
 
+    def execute_randint(self, exec_ctx):
+        a = val = exec_ctx.symbol_table.get('a')
+        b = val = exec_ctx.symbol_table.get('b')
+        if isinstance(a, Number):
+            if isinstance(b, Number):
+                return RTResult().success(Number(randint(a.value, b.value)))
+            else:
+                return RTResult().failure(RTError(
+                    self.pos_start, self.pos_end,
+                    'Argument b have to be a number',
+                    exec_ctx
+                ))
+        else:
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                'Argument a have to be a number',
+                exec_ctx
+            ))
+    execute_randint.arg_names = ['a', 'b']
+
     def execute_str(self, exec_ctx):
         val = exec_ctx.symbol_table.get('val')
         if isinstance(val, String):
@@ -1980,6 +2031,19 @@ class BuiltInFunction(BaseFunction):
                 exec_ctx
             ))
     execute_str.arg_names = ['val']
+
+    def execute_sleep(self, exec_ctx):
+        ts = exec_ctx.symbol_table.get('ts')
+        if isinstance(ts, Number):
+            sleep(ts.value)
+            return RTResult().success(Number.null)
+        else:
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                'Argument have to be a number',
+                exec_ctx
+            ))
+    execute_sleep.arg_names = ['ts']
 
     def execute_run(self, exec_ctx):
         fn = exec_ctx.symbol_table.get('fn')
@@ -2033,7 +2097,9 @@ BuiltInFunction.pop = BuiltInFunction('pop')
 BuiltInFunction.append = BuiltInFunction('append')
 BuiltInFunction.extend = BuiltInFunction('extend')
 BuiltInFunction.len = BuiltInFunction('len')
+BuiltInFunction.randint = BuiltInFunction('randint')
 BuiltInFunction.str = BuiltInFunction('str')
+BuiltInFunction.sleep = BuiltInFunction('sleep')
 BuiltInFunction.run = BuiltInFunction('run')
 
 #######################################
@@ -2352,7 +2418,9 @@ global_symbol_table.set("pop", BuiltInFunction.pop)
 global_symbol_table.set("append", BuiltInFunction.append)
 global_symbol_table.set("extend", BuiltInFunction.extend)
 global_symbol_table.set("len", BuiltInFunction.len)
+global_symbol_table.set("randint", BuiltInFunction.randint)
 global_symbol_table.set("str", BuiltInFunction.str)
+global_symbol_table.set("sleep", BuiltInFunction.sleep)
 global_symbol_table.set("RUN", BuiltInFunction.run)
 
 def run(fn, text):
@@ -2373,3 +2441,23 @@ def run(fn, text):
     result = interpreter.visit(ast.node, context)
 
     return result.value, result.error
+
+def main():
+    status = True
+
+    while status:
+        text = input('lthc > ')
+        if text.strip() == '':
+            continue
+
+        if text == 'exit': status = False
+        else:
+            result, error = run('<stdin>', text)
+
+            if error: print(error.as_string())
+            elif result: 
+                if len(result.elements) == 1: print(repr(result.elements[0]))
+                else: print(repr(result))
+
+if __name__ == '__main__':
+    main()

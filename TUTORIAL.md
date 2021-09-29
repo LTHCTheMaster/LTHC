@@ -8,7 +8,7 @@ Welcome on the tutorial, here you can learn the basics of LTHC
 
 ## The shell
 
-Before running a program, you have to run the shell (shell.py)
+Before running a program, you have to run the shell (lthc.py)
 
 <div align="center">
 <img src="./images/shell_default.png">
@@ -180,7 +180,11 @@ you can add a ``return <something_to_return>`` to your function for customize th
 
 ``len(val)`` (len of 'val')
 
+``randint(a, b)`` (random value between a and b both included)
+
 ``str(val)`` (cast to 'STRING' type)
+
+``sleep(ts)`` (sleep ts seconds)
 
 ``RUN(path)`` (run a .lthc file (LTHC Script))
 
