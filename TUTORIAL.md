@@ -50,7 +50,7 @@ You can create a 'STRING' type variable with a string, a string is created by su
 
 You can create a 'LIST' type variable with value ('LIST' are separed as more simple values in other 'LIST') between square brackets (``[]``)
 
-You can assign to an other variable a 'FUNCTION' (created with ``func``) or a 'BUILT-IN_FUNCTION'
+You can assign to an other variable a 'FUNCTION' (created with ``function``) or a 'BUILT-IN_FUNCTION'
 
 <div align="center">
 <img src="./images/list_clue.png">
@@ -150,11 +150,11 @@ multiple lines syntax: ``while <condition> then {new_line} <expressions> {new_li
 
 ## Functions
 
-one line default syntax: ``func func_name(?(<args>)) -> <expression>``
+one line default syntax: ``function func_name(?(<args>)) -> <expression>``
 
-multiple line syntax: ``func func_name(?(<args>)) {new_line} <expressions> {new_line} end``
+multiple line syntax: ``function func_name(?(<args>)) {new_line} <expressions> {new_line} end``
 
-one line by assignement syntax: ``var a_var_name = func (?(<args>)) -> <expression>``
+one line by assignement syntax: ``var a_var_name = function (?(<args>)) -> <expression>``
 
 ``var`` assignement syntax: ``var a_var_name = a_defined_function_name``
 
@@ -196,7 +196,7 @@ you can add a ``return <something_to_return>`` to your function for customize th
 
 ## Run Usage
 
-To run a file, tou have to type in the shell ``RUN(file_path_between_quotes)``
+To run a file, you have to type in the shell ``RUN(file_path_between_quotes)``
 
 For example, to run the <a href="./example.lthc">example file</a> you have to type ``RUN("example.lthc")``
 
@@ -218,23 +218,23 @@ In this work, we have to upgrade the script with more tests in functions to avoi
 
 First function to upgrade:
 
-``func oopify(prefix) -> prefix + "oop"``
+``function oopify(prefix) -> prefix + "oop"``
 
 -> We want to cast prefix to 'STRING' type so we replace ``prefix`` by ``str(prefix)`` and we obtain:
 
-``func oopify(prefix) -> str(prefix) + "oop"``
+``function oopify(prefix) -> str(prefix) + "oop"``
 
 <br>
 
 Now we have to upgrade the map function:
 
 ```
-func map(elements, function)
+function map(elements, func)
     var new_elements = []
     var len_ = len(elements)
 
     for i = 0 to len_ then
-        append(new_elements, function(elements/i))
+        append(new_elements, func(elements/i))
     end
     
     return new_elements
@@ -243,23 +243,23 @@ end
 
 First point, if elements is a 'LIST' type variable, assign the len variable to the len of elements else return a list with one single string which represent a space (so ``[" "]`` ),
 
-second point, if function is a 'FUNCTION' type variable, assign the len2 variable to the len of function else return a list with one single string which represent a space (so ``[" "]`` ),
+second point, if function is a 'FUNCTION' type variable, assign the len2 variable to the len of func else return a list with one single string which represent a space (so ``[" "]`` ),
 
 third point, if len2 is not equals to 1 return a list with one single string which represent a space (so ``[" "]`` )
 
 Now we have this function:
 
 ```
-func map(elements, function)
+function map(elements, func)
     var new_elements = []
     if is_list(elements) then var len_ = len(elements) else return [" "]
 
-    if is_func(function) then var len2 = len(function) else return [" "]
+    if is_func(func) then var len2 = len(function) else return [" "]
 
     if len2 != 1 then return [" "]
 
     for i = 0 to len_ then
-        append(new_elements, function(elements/i))
+        append(new_elements, func(elements/i))
     end
     
     return new_elements
@@ -271,7 +271,7 @@ end
 The last function to upgrade is the join function:
 
 ```
-func join(elements, separator)
+function join(elements, separator)
     var result = ""
     var len_ = len(elements)
 
@@ -298,7 +298,7 @@ In this line we only add a ``str`` casting
 So now we have this function:
 
 ```
-func join(elements, separator)
+function join(elements, separator)
     var result = ""
     
     if is_list(elements) then var len_ = len(elements) else return " "

@@ -38,7 +38,7 @@ atom
         : if-expr
         : for-expr
         : while-expr
-        : func-def
+        : function-def
 
 list-expr
         : LSQUARE (expr (COMMA expr)*)? RSQUARE
@@ -69,8 +69,8 @@ while-expr
           statement
         | (NEWLINE statements KEYWORD:END)
 
-func-def
-        : KEYWORD:FUNC IDENTIFIER?
+function-def
+        : KEYWORD:FUNCTION IDENTIFIER?
           LPAREN (IDENTIFIER (COMMA IDENTIFIER)*)? RPAREN
           (ARROW expr)
         | (NEWLINE statements KEYWORD:END)

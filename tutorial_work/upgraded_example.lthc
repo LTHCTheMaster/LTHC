@@ -1,8 +1,8 @@
 clear()
 
-func oopify(prefix) -> str(prefix) + "oop"
+function oopify(prefix) -> str(prefix) + "oop"
 
-func map(elements, function)
+function map(elements, function)
     var new_elements = []
     if is_list(elements) then var len_ = len(elements) else return [" "]
 
@@ -17,7 +17,7 @@ func map(elements, function)
     return new_elements
 end
 
-func join(elements, separator)
+function join(elements, separator)
     var result = ""
     
     if is_list(elements) then var len_ = len(elements) else return " "

@@ -25,12 +25,12 @@ var len_c = len(c)
 print("[" + str(c) + "]")
 print(len_c)
 # len_d must be 1
-var d = FUNC (a) -> a
+var d = function (a) -> a
 var len_d = len(d)
 print(d)
 print(len_d)
 # len_d2 must be 3
-var d2 = FUNC (a, b, c) -> a + b + c
+var d2 = function (a, b, c) -> a + b + c
 var len_d2 = len(d2)
 print(d2)
 print(len_d2)

@@ -1,2 +1,2 @@
-print( (func (a,b) -> a+b+1)(2,2) )
-print( (func (a,b) -> a*b)(2,2) )
+print( (function (a,b) -> a+b+1)(2,2) )
+print( (function (a,b) -> a*b)(2,2) )

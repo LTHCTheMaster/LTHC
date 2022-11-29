@@ -1,19 +1,19 @@
-# This is a very useful piece of software
+# This is a very useful example
 
-func oopify(prefix) -> prefix + "oop"
+function oopify(prefix) -> prefix + "oop"
 
-func map(elements, function)
+function map(elements, func)
     var new_elements = []
     var len_ = len(elements)
 
     for i = 0 to len_ then
-        append(new_elements, function(elements/i))
+        append(new_elements, func(elements/i))
     end
     
     return new_elements
 end
 
-func join(elements, separator)
+function join(elements, separator)
     var result = ""
     var len_ = len(elements)
 
